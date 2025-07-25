@@ -1,18 +1,16 @@
-# Use official Python image
 FROM python:3.12-slim
 
-# Set work directory
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN apt-get update && apt-get install -y build-essential
+
 WORKDIR /app
 
-# Copy all files
-COPY . .
+COPY . /app
 
-# Install dependencies
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Streamlit default port
 EXPOSE 8501
 
-# Run the app
-CMD ["streamlit", "run", "main.py", "--server.enableCORS=false"]
+CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.enableCORS=false"]
